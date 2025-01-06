@@ -1,7 +1,7 @@
 package HA_3;
 
 public class A {
-    private int a;
+   /* private int a;
     static double b;
     private int staticC;
     public double d;
@@ -11,7 +11,7 @@ public class A {
         d *= h(a);
     }
 
-    private static double h(double z) {
+    /*private static double h(double z) {
         return z * 3 + a;
     }
 
@@ -27,5 +27,5 @@ public class A {
     public static void main(String[] args) {
         int f = (int) c;
         i(f);
-    }
+    }*/
 }

@@ -17,7 +17,7 @@ public class Binaersucher {
     }
 
     public static void main(String[] args){
-        String[] 
+        //String[]
     }
 
 }

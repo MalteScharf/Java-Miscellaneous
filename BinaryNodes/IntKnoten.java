@@ -12,7 +12,7 @@ class IntKnoten implements Knoten{
         this.wert = wert;
     }
 
-
+    // Es wird die
     @Override
     public int werteAus() {
         return this.wert;

@@ -107,7 +107,8 @@ public class DateiSortiererTest extends TestCase {
                 result += test[i] + System.getProperty("line.separator");
             }
             assertEquals("Die Ausgabe stimmt nicht.", result , baos.toString());
-        } finally {
+        }
+        finally {
             System.setOut(old);
         }
     }

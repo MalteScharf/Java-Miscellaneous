@@ -1,43 +1,56 @@
 package HA_07;
 
 import java.io.*;
-import java.nio.channels.ScatteringByteChannel;
-import java.util.concurrent.RunnableFuture;
 
 public class DateiSortierer {
 
-    public StringListe einlesen(String dateiname) throws IOException, DateiNichtGefundenAusnahme {
+    /**
+     *
+     * @param dateiname Dateiname als String für Datei die eingelesen werde soll
+     * @return liefert den Inhalt in der Datei als StringListe zurück
+     * @throws DateiNichtGefundenAusnahme Wird geworfen sobald eine "FileNotFound Exception" ausgelöst wird
+     * @throws IOException
+     */
+    public StringListe einlesen(String dateiname) throws DateiNichtGefundenAusnahme, IOException {
         StringListe stringListe = new StringListe(); // neue StringListe erzeugen
-        BufferedReader br = new BufferedReader(new FileReader(dateiname));
-        try {
-            String line;
-            while ((line = br.readLine()) != null) {
-                stringListe.add(line);
-            }
-        } catch (FileNotFoundException e) {
-            throw new DateiNichtGefundenAusnahme(dateiname);
-        }
-        finally {
-            br.close();
-        }
 
+
+            try {
+                BufferedReader br = new BufferedReader(new FileReader(dateiname));
+                try {
+                    // Zeile für Zeile lesen
+                    String line;
+                    while ((line = br.readLine()) != null) {
+                        // Jede Zeile ist ein neuer Eintrag der StringListe
+                        stringListe.add(line);
+                    }
+                }  finally {
+                    br.close();
+                }
+            } catch (FileNotFoundException e){
+                throw new DateiNichtGefundenAusnahme(dateiname);
+            }
         return stringListe;
     }
 
+    /***
+     *
+     * @param unsortierteListe Als Eingabe eine unsortierte StringListe
+     * @return Liefert die StringListe der Eingabe sortiert zurück
+     */
     public StringListe sortiere(StringListe unsortierteListe){
         if (unsortierteListe == null) throw new IllegalArgumentException("null ist ein ungueltiges Argument.");
         StringListe sortierteListe = unsortierteListe;
 
-        // Bullbesort wird verwendet
-
+        // Bubbleesort wird verwendet
         for(int i =0; i<sortierteListe.size();i++){
-            boolean sorted = true;
+            boolean sorted = true; // Bollean "sorted" --> solange false ist die Lite nicht sortiert
             for (int j =0; j<sortierteListe.size()-1-i;j++){
                 if (sortierteListe.get(j).compareTo(sortierteListe.get(j+1))>0){ // wenn linker Eintrag größer --> vertausche
                     String temp = sortierteListe.get(j);
                     sortierteListe.set(j,sortierteListe.get(j+1));
                     sortierteListe.set(j+1, temp);
-                    sorted = false; // List ist nicht sortiert, weil Vertauschung durchgeführt wurde
+                    sorted = false; // Liste ist nicht sortiert, weil Vertauschung durchgeführt wurde
                 }
             }
             if(sorted){
@@ -48,10 +61,16 @@ public class DateiSortierer {
 
     }
 
+    /**
+     *
+     * @param out Der gewünschte OutputStream
+     * @param zeilen Die StringListe, welche ausgegeben werden soll
+     */
     public void gebeAus(OutputStream out, StringListe zeilen) {
         BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(out));
         try {
             try {
+                // Jeder Eintrage der StringListe wird als neue Zeile (.newLine()) im writer geschrieben
                 for (int i = 0; i < zeilen.size(); i++) {
                     writer.write(zeilen.get(i));
                     writer.newLine();
@@ -68,27 +87,23 @@ public class DateiSortierer {
 
     }
 
-    public void sortiereDatei(String dateiname)  {
-        if (dateiname == null || dateiname.isEmpty()) {
-            throw new IllegalArgumentException("Dateiname darf nicht null oder leer sein.");
-        }
+    /***
+     *
+     * @param dateiname Name der Datei, die geordnet werden soll
+     */
 
-        try {
+    public void sortiereDatei(String dateiname) {
+
+        try{
             StringListe unsorted = this.einlesen(dateiname);
             sortiere(unsorted);
             for (String s:unsorted){
                 System.out.print(s +" ");
             }
-        } catch (DateiNichtGefundenAusnahme e) {
-            System.err.println("Die Datei " + e.liefereDateinamen() + " konnte nicht gefunden werden.");
+        } catch (DateiNichtGefundenAusnahme e){
+            System.err.println("Die Datei " + e.liefereDateinamen()+" konnte nicht gefunden werden.");
         } catch (IOException e) {
-            // Andere IO-Ausnahmen
             System.err.println(e.getMessage());
         }
-
-
     }
-
-
-
 }

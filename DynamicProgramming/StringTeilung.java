@@ -1,7 +1,7 @@
 package DynamicProgramming;
 
 public class StringTeilung {
-    public int stringTeilungRek(int[] z, int n){
+    /*public int stringTeilungRek(int[] z, int n){
 
         // Basisfall
         if (z.length == 1) return n;
@@ -38,6 +38,6 @@ public class StringTeilung {
         if (z.length == 0) return 0;
 
         if (r[n] >0) return r[n];
-    }
+    } */
 
 }
